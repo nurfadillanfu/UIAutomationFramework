@@ -1,9 +1,11 @@
 package com.nurfadilla.stepdefinitions;
 
+import org.openqa.selenium.chrome.ChromeOptions;
 import com.nurfadilla.pages.LoginPage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
+import java.time.Duration;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Assertions;
@@ -16,11 +18,18 @@ public class LoginSteps {
     LoginPage loginPage;
 
     @Before
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
+    public void setup() {
 
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        ChromeOptions options = new ChromeOptions();
+
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+
+        driver = new ChromeDriver(options);
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         loginPage = new LoginPage(driver);
     }
